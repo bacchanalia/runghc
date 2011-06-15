@@ -1,0 +1,41 @@
+name:           runghc
+version:        0.1.0.0
+license:        BSD3
+license-file:   LICENSE
+copyright:      Michael Zuser 2011
+author:         Michael Zuser
+maintainer:     Michael Zuser <mikezuser@gmail.com>
+bug-reports:    mailto:mikezuser@gmail.com
+stability:      experimental
+homepage:       https://github.com/bacchanalia/runghc
+synopsis:       runghc replacement for fast repeated runs
+category:       Console
+cabal-version:  >= 1.6
+build-type:     Simple
+
+Description:
+    This is a replacement for runghc which keeps compiled files
+    for fast runtimes when nothing has changed
+    @
+        Usage: runghc [options] [ghc-options] file [file-arguments]
+    
+        Options:
+         -! --compile-only  Do not run the scipt, just compile it
+            --exe-dir=DIR   Directory for the executable
+                                default=<scr-dir>/.compile 
+            --out-dir=DIR   Directory for the intermediate files
+                                default=<exe-dir>/<basename>-intermediate-files
+         -? --help          Display this help message
+    @
+
+executable runghc
+  hs-source-dirs:   .
+  main-is:          runghc.hs
+  build-depends: 
+      base      == 4.*
+    , directory == 1.1.*
+    , filepath  == 1.2.*
+    , old-time  == 1.0.*
+    , process   == 1.0.* 
+    , cmdargs   == 0.7.*
+
