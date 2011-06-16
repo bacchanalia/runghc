@@ -93,12 +93,18 @@ getSrcs file outDir = (file :) . thereIsNoMain . concatMap hss <$> getFiles outD
 compile :: [String] -> FilePath -> FilePath -> FilePath -> IO ()
 compile ghcOpts file exe outDir = do
     createDirectoryIfMissing True $ takeDirectory exe
-    Just ghc <- findExecutable "ghc"
-    ec <- waitForProcess =<< runSilent ghc fullOpts
-    when (ec /= ExitSuccess) $ exitWith ec
+    runGHC fullOpts
   where 
     fullOpts = ["-o",exe,"-outputdir",outDir] ++ ghcOpts ++ [file]
         
+runGHC :: [String] -> IO ()
+runGHC opts = do
+    Just ghc <- findExecutable "ghc"
+    (ec, _, err) <- readProcessWithExitCode ghc opts ""
+    when (ec /= ExitSuccess) $ do
+        hPutStr stderr err
+        exitWith ec
+
 getExeDir, getOutDir, getExe :: FilePath -> OptDesc -> FilePath
 getExeDir file opts = fromMaybe def $ fExeDir opts
   where def = takeDirectory file </> ".compiled"
@@ -129,10 +135,3 @@ getFiles d
     notDots f = all (/= f) [".",".."]
     expand f = ifteM (doesDirectoryExist f) (getFiles f) (return [f])
   
-runSilent :: FilePath -> [String] -> IO ProcessHandle
-runSilent proc opts = do
-    hNull <- openFile nullFile WriteMode 
-    runProcess proc opts Nothing Nothing Nothing (Just hNull) (Just hNull)
-  where 
-    nullFile = if os == "windows" then "NUL" else "/dev/null"
-
