@@ -20,7 +20,7 @@ Description:
         Usage: runghc [options] [ghc-options] file [file-arguments]
     
         Options:
-         -! --compile-only  Do not run the scipt, just compile it
+         -! --compile-only  Do not run the script, just compile it
             --exe-dir=DIR   Directory for the executable
                                 default=<scr-dir>/.compile 
             --out-dir=DIR   Directory for the intermediate files
