@@ -45,9 +45,10 @@ optDesc = OptDesc
 
 main :: IO ()
 main = do
+    nargs <- length <$> getArgs
     (caOpts, nopts) <- getOpts <$> getArgs
-    case cmdArgsHelp caOpts of 
-        Just _ -> putStr help >> exitSuccess
+    when (nargs == 0 || isJust (cmdArgsHelp caOpts)) $
+        putStr help >> exitSuccess
 
     let opts = cmdArgsValue caOpts
     (ghcOpts, file:fileArgs) <- splitGHCOpts . drop nopts <$> getArgs
@@ -69,7 +70,7 @@ getOpts args = (opts, length nopts)
     processArgs = process (cmdArgsMode optDesc)
 
 shouldCompile :: FilePath -> FilePath -> FilePath -> IO Bool
-shouldCompile file exe outDir = ifteM (doesFileExist file) newerSrcs (return True)
+shouldCompile file exe outDir = ifteM (doesFileExist exe) newerSrcs (return True)
   where
     modTime = getModificationTime
     newerSrcs = do
@@ -117,7 +118,7 @@ findM pred = go
     go (a:as) = ifteM (pred a) (return (Just a)) (go as)
 
 getFiles :: FilePath -> IO [FilePath]
-getFiles d 
+getFiles d
     =   return . concat
     =<< mapM expand
     =<< return . map (d </>) . filter notDots
