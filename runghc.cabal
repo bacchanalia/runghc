@@ -1,8 +1,8 @@
 name:           runghc
 version:        0.1.0.0
-license:        BSD3
-license-file:   LICENSE
-copyright:      Michael Zuser 2011
+license:        GPL
+license-file:   COPYING
+copyright:      Copyright (C) 2011 Michael Zuser
 author:         Michael Zuser
 maintainer:     Michael Zuser <mikezuser@gmail.com>
 bug-reports:    mailto:mikezuser@gmail.com
