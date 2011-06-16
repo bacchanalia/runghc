@@ -53,6 +53,7 @@ main = do
     (ghcOpts, fileAndArgs) <- splitGHCOpts . drop nopts <$> getArgs
     when (null fileAndArgs) $
         putStr help >> exitSuccess
+
     let (file:fileArgs) = fileAndArgs
     let exe = getExe file opts
     let outDir = getOutDir file opts
@@ -84,7 +85,7 @@ getSrcs :: FilePath -> FilePath -> IO [FilePath]
 getSrcs file outDir = (file :) . thereIsNoMain . concatMap hss <$> getFiles outDir
   where
     thereIsNoMain = filter $ (/= "Main") . takeBaseName
-    inSrcDir = flip replaceDirectory $ takeDirectory file
+    inSrcDir src = takeDirectory file </> makeRelative outDir src
     asHs = flip replaceExtension "hs"
     hss f = case takeExtension f of
         ".hi" -> [inSrcDir . asHs $ f]
