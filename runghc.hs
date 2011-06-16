@@ -45,13 +45,15 @@ optDesc = OptDesc
 
 main :: IO ()
 main = do
-    nargs <- length <$> getArgs
     (caOpts, nopts) <- getOpts <$> getArgs
-    when (nargs == 0 || isJust (cmdArgsHelp caOpts)) $
+    when (isJust $ cmdArgsHelp caOpts) $
         putStr help >> exitSuccess
 
     let opts = cmdArgsValue caOpts
-    (ghcOpts, file:fileArgs) <- splitGHCOpts . drop nopts <$> getArgs
+    (ghcOpts, fileAndArgs) <- splitGHCOpts . drop nopts <$> getArgs
+    when (null fileAndArgs) $
+        putStr help >> exitSuccess
+    let (file:fileArgs) = fileAndArgs
     let exe = getExe file opts
     let outDir = getOutDir file opts
 
