@@ -8,7 +8,7 @@ Copyright:      Copyright (C) 2011 Michael Zuser
 License:        GPL-3
 License-file:   COPYING
 Author:         Michael Zuser
-Maintainer:     Michael Zuser <mikezuser@gmail.com>
+Maintainer:     Michael Zuser <mikezuser@gmail.com   
 Cabal-version:  >= 1.6
 Build-type:     Simple
 
@@ -16,15 +16,17 @@ Description:
     This is a replacement for runghc which keeps compiled files
     for fast runtimes when nothing has changed
     .
-    > Usage: runghc [options] [ghc-options] file [file-arguments]
-    >
-    > Options:
-    >  -! --compile-only  Do not run the script, just compile it
-    >     --exe-dir=DIR   Directory for the executable
-    >                         default=<scr-dir>/.compile 
-    >     --out-dir=DIR   Directory for the intermediate files
-    >                         default=<exe-dir>/<basename>-intermediate-files
-    >  -? --help          Display this help message
+    @
+        Usage: runghc [options] [ghc-options] file [file-arguments]
+        
+        Options:
+         -! --compile-only  Do not run the script, just compile it
+            --exe-dir=DIR   Directory for the executable
+                                default=<scr-dir>/.compile 
+            --out-dir=DIR   Directory for the intermediate files
+                                default=<exe-dir>/<basename>-intermediate-files
+         -? --help          Display this help message
+    @
 
 Executable runghc
   hs-source-dirs:   .
