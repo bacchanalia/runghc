@@ -33,9 +33,9 @@ executable runghc
   main-is:          runghc.hs
   build-depends: 
       base      == 4.*
-    , directory == 1.1.*
-    , filepath  == 1.2.*
-    , old-time  == 1.0.*
-    , process   == 1.0.* 
-    , cmdargs   == 0.7.*
+    , directory == 1.*
+    , filepath  == 1.*
+    , old-time  == 1.*
+    , process   == 1.* 
+    , cmdargs   >= 0.6 && < 0.8
 
