@@ -60,12 +60,12 @@ optDesc = OptDesc
 
 main :: IO ()
 main = do
-    (caOpts, nopts) <- getOpts <$> getArgs
+    (caOpts, args) <- getOpts <$> getArgs
     when (isJust $ cmdArgsHelp caOpts) $
         putStr help >> exitSuccess
 
     let opts = cmdArgsValue caOpts
-    (ghcOpts, fileAndArgs) <- splitGHCOpts . drop nopts <$> getArgs
+    let (ghcOpts, fileAndArgs) = splitGHCOpts args
     when (null fileAndArgs) $
         putStr help >> exitSuccess
 
@@ -80,8 +80,8 @@ main = do
   where
     splitGHCOpts = break ((== ".hs") . takeExtension)
 
-getOpts :: [String] -> (CmdArgs OptDesc, Int)
-getOpts args = (opts, length nopts) 
+getOpts :: [String] -> (CmdArgs OptDesc, [String])
+getOpts args = (opts, drop (length nopts) args) 
   where
     (Right opts : nopts) = reverse . takeWhile isRight . map processArgs . inits $ args 
     isRight e = case e of Right _ -> True ; Left _ -> False
@@ -111,7 +111,7 @@ compile ghcOpts file exe outDir = do
     createDirectoryIfMissing True $ takeDirectory exe
     runGHC fullOpts
   where 
-    fullOpts = ["-o",exe,"-outputdir",outDir] ++ ghcOpts ++ [file]
+    fullOpts = ["--make","-o",exe,"-outputdir",outDir] ++ ghcOpts ++ [file]
         
 runGHC :: [String] -> IO ()
 runGHC opts = do
