@@ -1,5 +1,5 @@
 Name:           runghc
-Version:        0.1.0.1
+Version:        0.1.0.2
 Category:       Console
 Synopsis:       runghc replacement for fast repeated runs
 Stability:      experimental
